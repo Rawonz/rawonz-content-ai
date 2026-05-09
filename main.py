@@ -12,10 +12,10 @@ from telegram.ext import (
 
 from groq import Groq
 
-load_dotenv()
+load_dotenv(override=False)
 
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 client = Groq(api_key=GROQ_API_KEY)
 
@@ -39,7 +39,6 @@ Sənin adın "Rawonz AI"dir. Səni Rawonz.EXE hazırlayıb.
 Əgər istifadəçi salam, kimsen, nəsən kimi şeylər yazarsa — çox qısa cavab ver və məhsul adı göndərməyə yönləndir. Heç bir başqa mövzuda danışma."""
 
 
-# Alt düymə klaviaturası
 def main_keyboard():
     keyboard = [
         [KeyboardButton("🚀 Başla"), KeyboardButton("ℹ️ Haqqında")],
@@ -59,7 +58,7 @@ def ask_ai(user_text: str) -> str:
     return response.choices[0].message.content
 
 
-async def send_welcome(update: Update):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_name = update.message.from_user.first_name
     await update.message.reply_text(
         f"Salam, {user_name}! 👋\n\n"
@@ -80,14 +79,9 @@ async def send_welcome(update: Update):
     )
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await send_welcome(update)
-
-
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text.strip()
 
-    # Düymə cavabları
     if user_text == "🚀 Başla":
         await update.message.reply_text(
             "👇 Məhsul adını göndər, mən dərhal hazırlayım!\n\n"
@@ -122,7 +116,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    # Qısa salamlara cavab
     qisa_sozler = ["salam", "hi", "hello", "kimsen", "nəsən", "nesan", "ney", "?", "hə", "he"]
     if user_text.lower() in qisa_sozler:
         await update.message.reply_text(
@@ -133,7 +126,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    # AI cavabı
     await update.message.reply_text("⏳ Hazırlanır...")
     try:
         answer = ask_ai(user_text)
