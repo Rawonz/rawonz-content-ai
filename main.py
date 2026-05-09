@@ -70,10 +70,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "#️⃣ Hashtaglar\n\n"
         "━━━━━━━━━━━━━━━\n"
         "👇 Məhsul adını göndər, başlayaq!\n\n"
-        "Məsələn: *dubai şokoladı*, *iphone kabı*, *parfüm*\n\n"
-        "━━━━━━━━━━━━━━━\n"
-        "☕ Dəstək ol: https://buymeacoffee.com/rawonzexe\n"
-        "💸 Donate: https://donuter.org/rawonzexe",
+        "Məsələn: *dubai şokoladı*, *iphone kabı*, *parfüm*",
         parse_mode="Markdown",
         reply_markup=main_keyboard()
     )
